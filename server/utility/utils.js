@@ -6,11 +6,15 @@ global["declare"] = function(name, value) {
   global[name] = value;
   return global[name];
 }
+declare("declared", (name) => {
+  return global[name] ? true : false;
+})
 
 declare("express", require("express"));
 declare("fs", require("fs"));
 declare("chalk", require("chalk"));
 declare("request", require("request-promise"));
+declare("bodyParser", require("body-parser"));
 
 declare("bodyparser", function(req, res, next) {
   if (req.method == "POST") {

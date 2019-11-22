@@ -7,9 +7,11 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "body-parser": "^1.19.0",
     "cap": "^0.2.1",
     "chalk": "^3.0.0",
     "express": "^4.17.1",
+    "express-session": "^1.17.0",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "request": "^2.88.0",

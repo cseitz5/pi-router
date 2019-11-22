@@ -3,7 +3,6 @@ log.warn("|[INIT]| BEGIN INITIALIZATION...");
 var config = require(__dirname + "/../config.json");
 var app = express();
 var port = 8080;
-app.use(express.json());
 declare("init", new Sequence(() => {
   require(__dirname + "/net/net.js");
   app.listen(port, () => {

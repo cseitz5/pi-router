@@ -1,0 +1,29 @@
+<style>
+  body {
+    margin: 0px;
+    background-color: #282c34;
+    text-align: center;
+  }
+
+  .panel {
+    background-color: #282c34;
+    border-radius: 1vh;
+    padding: 10px;
+    margin-left: auto; margin-right: auto;
+
+  }
+</style>
+
+<body>
+  <div class="panel" style="margin-top: 25vh;">
+    <form action="/login" method="post">
+      <div hidden>
+        <input hidden type="text" name="username" value="N/A" />
+      </div>
+      <div>
+        <input type="password" name="password" />
+        <input type="submit" value="Log in" />
+      </div>
+    </form>
+  </div>
+</body>

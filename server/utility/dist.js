@@ -20,6 +20,7 @@ module.exports = (app) => {
   const dist = path.normalize(__dirname + "/../../dist");
   var indexPage;
   var statics = express();
+  var publicstatics = express();
   log.success("|[LOADING VUE]| ");
   require("glob")('/**/*', {
     root: dist,
@@ -32,7 +33,11 @@ module.exports = (app) => {
         //statics[item.split(dist)[1]] = res;
         var name = item.split(dist)[1];
         var typing = mime.lookup(item);
-        statics.get(name, (req, res) => {
+        var chosenapp = statics;
+        if (typing.indexOf("image") >= 0 || typing.indexOf("img") >= 0 || typing.indexOf("/css") >= 0) {
+          chosenapp = publicstatics;
+        }
+        chosenapp.get(name, (req, res) => {
           res.contentType(typing);
           res.send(data);
         })
@@ -41,7 +46,7 @@ module.exports = (app) => {
           indexPage = data;
         } else if (name.indexOf(".map") >= 0) {
           var basename = path.basename(name);
-          statics.get(name.split(".map")[0] + "/" + basename, (req, res) => {
+          chosenapp.get(name.split(".map")[0] + "/" + basename, (req, res) => {
             res.contentType(typing);
             res.send(data);
           })
@@ -49,6 +54,30 @@ module.exports = (app) => {
       })
     });
   });
+  require("glob")('/**/*', {
+    root: __dirname + "/../static",
+    nodir: true,
+  }, (err, paths) => {
+    paths.forEach((item, index) => {
+      var ready2 = init2.checkpoint();
+      fs.readFile(item, (err, data) => {
+        ready2();
+        //statics[item.split(dist)[1]] = res;
+        var name = item.split(dist)[1];
+        var typing = mime.lookup(item);
+        var chosenapp = publicstatics;
+        chosenapp.get(name, (req, res) => {
+          res.contentType(typing);
+          res.send(data);
+        })
+        log.white(chalk.greenBright("> ") + name);
+      })
+    });
+  });
+  app.use(publicstatics);
+  if (declared("vue_auth")) {
+    app.use(vue_auth);
+  }
   app.use(statics);
   app.use((req, res) => {
     res.contentType("text/html");
